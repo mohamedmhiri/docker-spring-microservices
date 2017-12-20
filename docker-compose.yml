@@ -1,0 +1,56 @@
+version: '2'
+services:
+  config-service:
+    build:
+        context: ./config-service
+        dockerfile: Dockerfile
+    ports:
+     - 8888:8888
+    networks:
+     - spring-microservices-network
+
+  product-service:
+    build:
+        context: ./product-service
+        dockerfile: Dockerfile
+    links:
+     - config-service
+    depends_on:
+     - config-service
+    ports:
+     - 8080:8080
+    networks:
+     - spring-microservices-network
+  
+  discovery-service:
+    build:
+        context: ./discovery-service
+        dockerfile: Dockerfile
+    links:
+     - config-service
+    depends_on:
+      - config-service
+    ports:
+     - 8761:8761
+    networks:
+     - spring-microservices-network
+
+  proxy-service:
+    build:
+        context: ./proxy-service
+        dockerfile: Dockerfile
+    links:
+     - config-service
+     - discovery-service
+    depends_on:
+     - config-service
+     - discovery-service
+    networks:
+     - spring-microservices-network
+    ports:
+     - 9999:9999
+
+
+networks:
+  spring-microservices-network:
+      driver: bridge
