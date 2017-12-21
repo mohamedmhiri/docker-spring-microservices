@@ -5,16 +5,14 @@
 
 ---
 #### Docker Part
-Fist of all, install docker from the official [Docker](https://www.docker.com/) website.
-
-Then, visite the [docker documentation](https://docs.docker.com/) to install docker and run the hello-world container to make sure that everything is ok.
+Now, you should be able to build the Spring Config Microservice
 
 Now, create the Dockerfile config file under your project directory and paste this:
 
 ```
 FROM openjdk:8
+VOLUME /tmp
 ADD target/config-service-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8888
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 inside it.
@@ -36,7 +34,8 @@ docker images
 ```
 and you'll get a list of all available docker images on your computer.
 
-Now, you are ready to run the docker image with:
+Finally, you are ready to run the docker image with:
 ```
 docker run -it -p 8888:8888 -e SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/mohamedmhiri/spring-microservices-config docker-spring-config
 ```
+Move to the [next step](https://github.com/mohamedmhiri/docker-spring-microservices/tree/master/product-service).
